@@ -1,4 +1,6 @@
 # backend-web-project
+Tämä dokumentaatio kuvaa projektin tämänhetkistä tilaa ja suunnitelmaa. Kyseessä on projektin aloitusvaihe, ja sisältöä saatetaan päivittää työn edetessä.
+
 
 Tämä projekti on yksinkertainen tehtävienhallinta-API, joka on toteutettu Node.js:llä ja Expressillä. Sen avulla voidaan käsitellä tehtäviä eli "to-doja" HTTP-pyyntöjen avulla. Projektissa rakennetaan oma pieni palvelin, joka tallentaa tehtävät tasks.json-tiedostoon.
 
