@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 // testing registration
 router.post('/register', async (req, res) => {
@@ -63,12 +65,28 @@ router.post('/login', async (req, res) => {
     if(!user){
       return res.status(400).json({message: 'wrong credentials'});
     }
-
+    // password comparison
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch){
       return res.status(400).json({message: 'wrong credentials'});
     }
+
+    const payload ={
+      user: {
+        id: user._id
+      }
+    };
+
+    jwt.sign(
+      payload,
+      process.env.JWT_SECRET,
+      {expiresIn: '1h'},
+      (err, token) => {
+        if (err) throw err;
+        res.json({token}); // sends token
+      }
+    );
 
     res.json({message: 'login succesful'});
 
