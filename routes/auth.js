@@ -8,19 +8,19 @@ require('dotenv').config();
 // testing registration
 router.post('/register', async (req, res) => {
     const { name, email, password } = req.body;
-  
+
     //check if data is provided
     if (!name || !email || !password) {
       return res.status(400).json({ message: 'please provide name email and password' });
     }
-  
+
     try {
       //check if user already exists
       let user = await User.findOne({ email });
       if (user) {
         return res.status(400).json({ message: 'user already exists with that email' });
       }
-  
+
       //create a new user using the model
       user = new User({
         name,
@@ -30,10 +30,10 @@ router.post('/register', async (req, res) => {
 
       const salt = await bcrypt.genSalt(10)
       user.password = await bcrypt.hash(password, salt);
-  
+
       // save the user to the database
       await user.save();
-  
+
       // send back success response
       res.status(201).json({
         _id: user._id,
@@ -42,11 +42,11 @@ router.post('/register', async (req, res) => {
         createdAt: user.createdAt,
         updatedAt: user.updatedAt
        });
-  
+
     } catch (err) {
       // handle potential errors like database errors or validation errors
       console.error(err.message);
-      // check if it's a mongodb duplicate key error
+      // check if its a mongodb duplicate key error
       if (err.code === 11000) {
           return res.status(400).json({ message: 'user already exists with that email' });
       }
@@ -83,15 +83,21 @@ router.post('/login', async (req, res) => {
       process.env.JWT_SECRET,
       {expiresIn: '1h'},
       (err, token) => {
-        if (err) throw err;
-        res.json({token}); // sends token
+        if (err) {
+            // It's important to handle the error from jwt.sign properly
+            console.error("jwt signing error:", err);
+            // Don't throw, send a server error response
+            return res.status(500).json({ message: 'error generating token' });
+        }
+        res.json({token}); // <<< This is the only response sent on success
       }
     );
 
-    res.json({message: 'login succesful'});
+    // REMOVE THIS LINE: res.json({message: 'login succesful'});
 
   } catch (err){
-    console.error(err.messsage);
+    // Also fix the typo here if you haven't already
+    console.error(err.message); // Was err.messsage
     res.status(500).json({message: 'server error'});
   }
 });
