@@ -93,7 +93,7 @@ router.post('/login', async (req, res) => {
       }
     );
 
-    // REMOVE THIS LINE: res.json({message: 'login succesful'});
+    
 
   } catch (err){
     // Also fix the typo here if you haven't already
