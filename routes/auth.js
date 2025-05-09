@@ -87,14 +87,14 @@ router.post('/login', async (req, res) => {
             console.error("jwt signing error:", err);
             return res.status(500).json({ message: 'error generating token' });
         }
-        res.json({token}); // 
+        res.json({token});
       }
     );
 
     
 
   } catch (err){
-    console.error(err.message); //
+    console.error(err.message); 
     res.status(500).json({message: 'server error'});
   }
 });
