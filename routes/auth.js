@@ -84,20 +84,17 @@ router.post('/login', async (req, res) => {
       {expiresIn: '1h'},
       (err, token) => {
         if (err) {
-            // It's important to handle the error from jwt.sign properly
             console.error("jwt signing error:", err);
-            // Don't throw, send a server error response
             return res.status(500).json({ message: 'error generating token' });
         }
-        res.json({token}); // <<< This is the only response sent on success
+        res.json({token}); // 
       }
     );
 
     
 
   } catch (err){
-    // Also fix the typo here if you haven't already
-    console.error(err.message); // Was err.messsage
+    console.error(err.message); //
     res.status(500).json({message: 'server error'});
   }
 });
